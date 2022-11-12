@@ -20,6 +20,7 @@ puts "[1] Comprar"
 puts "[2] Sair "
 
 opcao_escolhida = gets.chomp.to_i 
+while opcao_escolhida !=2
     if opcao_escolhida == 1
         puts "Selecione o Produto Desejado"
         puts "[1] Produto A: R$50.00"
@@ -41,11 +42,13 @@ opcao_escolhida = gets.chomp.to_i
         puts "Sub-total: R$#{sub_total}0"
         print "Digite 0 para voltar ao menu inicial :"
         opcao_escolhida = gets.chomp.to_i
+
         if opcao_escolhida == 0
             puts "Selecione a opcao desejada:"
             puts "[1] Comprar"
             puts "[2] Sair "
+            opcao_escolhida = gets.chomp.to_i 
         end
-    elsif opcao_escolhida == 2
-        puts "Ate Breve!!!!"
-    end
+    end   
+end 
+puts "Ate Breve!!!!"
