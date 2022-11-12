@@ -28,6 +28,13 @@ def exibe_menu_principal
     gets.chomp.to_i 
 end
 
+def calcula_sub_total(produtos, opcao, quantidade)
+    indice_produto = opcao - 1
+    preco_produto = produtos[indice_produto]["preco"]
+
+    preco_produto * quantidade     
+end
+
 opcao_menu = exibe_menu_principal
 
 while opcao_menu != 2    
@@ -44,10 +51,9 @@ while opcao_menu != 2
         quantidade = gets.chomp.to_i        
 
         puts "Produto: #{produtos[produto_escolhido - 1]["nome"]} - R$#{produtos[produto_escolhido - 1]["preco"]}0"
-        puts "Quantidade: #{quantidade}"
+        puts "Quantidade: #{quantidade}"        
 
-        preco = produtos[produto_escolhido - 1]["preco"]
-        sub_total += preco * quantidade
+        sub_total += calcula_sub_total(produtos, produto_escolhido, quantidade)
         
         puts "Sub-total: R$#{sub_total}0"
         print "Digite 0 para voltar ao menu inicial :"
