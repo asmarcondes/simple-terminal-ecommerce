@@ -40,9 +40,14 @@ opcao_menu = exibe_menu_principal
 while opcao_menu != 2    
     if opcao_menu == 1
         puts "Selecione o Produto Desejado"
-        puts "[1] Produto A: R$50.00"
-        puts "[2] Produto B: R$200.00"
-        puts "[3] Produto C: R$100.00"
+
+        produtos.each_with_index do |produto, i|
+            numero = i + 1
+            nome = produto["nome"]
+            preco = produto["preco"].to_s + "0"
+
+            puts "[#{numero}] #{nome}: #{preco}"            
+        end        
 
         produto_escolhido = gets.chomp.to_i
 
