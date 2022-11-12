@@ -17,7 +17,10 @@ produtos = [
 # Variáveis de controle do e-commerce
 sub_total = 0.0
 opcao_menu = 0
-
+def solicita_input_usuario(converte_inteiro = true)
+   input = gets.chomp
+   converte_inteiro ? input.to_i : input
+end
 def exibe_menu_principal
     puts "Selecione a opção desejada:\n"
     puts "[1] Comprar"
@@ -25,7 +28,7 @@ def exibe_menu_principal
 
     print "> "
 
-    gets.chomp.to_i 
+     solicita_input_usuario  
 end
 
 def calcula_sub_total(produtos, opcao, quantidade)
@@ -34,9 +37,9 @@ def calcula_sub_total(produtos, opcao, quantidade)
 
     preco_produto * quantidade     
 end
-
+ 
 opcao_menu = exibe_menu_principal
-
+ 
 while opcao_menu != 2    
     if opcao_menu == 1
         puts "Selecione o Produto Desejado"
@@ -49,11 +52,11 @@ while opcao_menu != 2
             puts "[#{numero}] #{nome}: #{preco}"            
         end        
 
-        produto_escolhido = gets.chomp.to_i
+        produto_escolhido =  solicita_input_usuario 
 
         print "Digite a quantidade desejada: "
 
-        quantidade = gets.chomp.to_i        
+        quantidade =  solicita_input_usuario         
 
         puts "Produto: #{produtos[produto_escolhido - 1]["nome"]} - R$#{produtos[produto_escolhido - 1]["preco"]}0"
         puts "Quantidade: #{quantidade}"        
@@ -62,7 +65,7 @@ while opcao_menu != 2
         
         puts "Sub-total: R$#{sub_total}0"
         print "Digite 0 para voltar ao menu inicial :"
-        opcao_checkout = gets.chomp.to_i        
+        opcao_checkout =  solicita_input_usuario         
 
         opcao_menu = exibe_menu_principal if opcao_checkout == 0
     end   
