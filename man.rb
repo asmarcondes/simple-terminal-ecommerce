@@ -32,13 +32,20 @@ opcao_escolhida = gets.chomp.to_i
 
         quantidade = gets.chomp.to_i        
 
-        puts "Produto: #{produtos[produto_escolhido - 1]["nome"]} - R$#{produtos[produto_escolhido - 1]["preco"]}"
+        puts "Produto: #{produtos[produto_escolhido - 1]["nome"]} - R$#{produtos[produto_escolhido - 1]["preco"]}0"
         puts "Quantidade: #{quantidade}"
 
         preco = produtos[produto_escolhido - 1]["preco"]
         sub_total += preco * quantidade
         
         puts "Sub-total: R$#{sub_total}0"
+        print "Digite 0 para voltar ao menu inicial :"
+        opcao_escolhida = gets.chomp.to_i
+        if opcao_escolhida == 0
+            puts "Selecione a opcao desejada:"
+            puts "[1] Comprar"
+            puts "[2] Sair "
+        end
     elsif opcao_escolhida == 2
         puts "Ate Breve!!!!"
     end
