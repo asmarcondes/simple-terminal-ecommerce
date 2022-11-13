@@ -37,30 +37,38 @@ def calcula_sub_total(produtos, opcao, quantidade)
 
     preco_produto * quantidade     
 end
- 
-opcao_menu = exibe_menu_principal
+
+ def selecao_produto(produtos )
+    puts "Selecione o Produto Desejado"
+
+    produtos.each_with_index do |produto, i|
+        numero = i + 1
+        nome = produto["nome"]
+        preco = produto["preco"].to_s + "0"
+
+        puts "[#{numero}] #{nome}: #{preco}"            
+    end        
+    solicita_input_usuario 
+ end
+
+ def insere_quantidade
+    print "Digite a quantidade desejada: "
+
+     solicita_input_usuario         
+ end 
+
+ def exibe_produto_escolhido(produto , quantidade)
+    puts "Produto: #{produto["nome"]} - R$#{produto["preco"]}0"
+    puts "Quantidade: #{quantidade}"  
+   
+ end
+  opcao_menu = exibe_menu_principal
  
 while opcao_menu != 2    
-    if opcao_menu == 1
-        puts "Selecione o Produto Desejado"
-
-        produtos.each_with_index do |produto, i|
-            numero = i + 1
-            nome = produto["nome"]
-            preco = produto["preco"].to_s + "0"
-
-            puts "[#{numero}] #{nome}: #{preco}"            
-        end        
-
-        produto_escolhido =  solicita_input_usuario 
-
-        print "Digite a quantidade desejada: "
-
-        quantidade =  solicita_input_usuario         
-
-        puts "Produto: #{produtos[produto_escolhido - 1]["nome"]} - R$#{produtos[produto_escolhido - 1]["preco"]}0"
-        puts "Quantidade: #{quantidade}"        
-
+    if opcao_menu == 1       
+        produto_escolhido =  selecao_produto(produtos)
+        quantidade =  insere_quantidade        
+        exibe_produto_escolhido(produtos[produto_escolhido -1] ,quantidade)
         sub_total += calcula_sub_total(produtos, produto_escolhido, quantidade)
         
         puts "Sub-total: R$#{sub_total}0"
