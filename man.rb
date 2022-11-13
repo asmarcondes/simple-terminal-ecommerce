@@ -81,7 +81,7 @@ def selecao_produto(produtos)
         nome = produto["nome"]
         preco = Utils.formata_valor_monetario(produto["preco"])
 
-        UI.exibe_mensagem("[#{numero}] #{nome}: #{preco}"            )
+        UI.exibe_mensagem("[#{numero}] #{nome}: #{preco}")
     end
 
     UI.linha_vazia
@@ -121,9 +121,10 @@ while opcao_menu != Menu::SAIR
 
         UI.linha_vazia
         UI.exibe_mensagem("Digite #{Menu::VOLTAR} para voltar ao menu inicial: ", false)
-
-        opcao_checkout =  UI.solicita_input
-        opcao_menu = exibe_menu_principal if opcao_checkout == Menu::VOLTAR
+        
+        opcao_menu =  UI.solicita_input        
+    elsif opcao_menu == Menu::VOLTAR
+        opcao_menu = exibe_menu_principal
     end   
 end
 
