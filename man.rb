@@ -23,6 +23,12 @@ module UI
     end
 end
 
+module Menu
+    COMPRAR = 1
+    SAIR = 2
+    VOLTAR = 0
+end
+
 # Lista de produtos disponíveis para adicionar ao carrinho
 produtos = [
     {
@@ -45,8 +51,8 @@ def exibe_menu_principal
     UI.exibe_mensagem("Selecione a opção desejada:")     
     UI.linha_vazia
 
-    UI.exibe_mensagem("[1] Comprar")
-    UI.exibe_mensagem("[2] Sair")
+    UI.exibe_mensagem("[#{Menu::COMPRAR}] Comprar")
+    UI.exibe_mensagem("[#{Menu::SAIR}] Sair")
     UI.linha_vazia
 
     UI.exibe_mensagem("> ", false)
@@ -94,8 +100,8 @@ end
 sub_total = 0.0
 opcao_menu = exibe_menu_principal
  
-while opcao_menu != 2    
-    if opcao_menu == 1       
+while opcao_menu != Menu::SAIR    
+    if opcao_menu == Menu::COMPRAR       
         produto_escolhido = selecao_produto(produtos)
         quantidade = insere_quantidade        
         exibe_produto_escolhido(produtos[produto_escolhido-1] ,quantidade)
@@ -105,10 +111,10 @@ while opcao_menu != 2
         UI.exibe_mensagem("Sub-total: R$#{sub_total}0")
 
         UI.linha_vazia
-        UI.exibe_mensagem("Digite 0 para voltar ao menu inicial: ", false)
+        UI.exibe_mensagem("Digite #{Menu::VOLTAR} para voltar ao menu inicial: ", false)
 
         opcao_checkout =  UI.solicita_input
-        opcao_menu = exibe_menu_principal if opcao_checkout == 0
+        opcao_menu = exibe_menu_principal if opcao_checkout == Menu::VOLTAR
     end   
 end
 
