@@ -1,3 +1,8 @@
+module Utils
+    def Utils.formata_valor_monetario(numero)
+        "R$#{numero}0"
+    end
+end
 module UI
     def UI.clear        
         print "\e[H"    # tells the terminal to move the cursor to the top left corner, false
@@ -74,7 +79,7 @@ def selecao_produto(produtos)
     produtos.each_with_index do |produto, i|
         numero = i + 1
         nome = produto["nome"]
-        preco = produto["preco"].to_s + "0"
+        preco = Utils.formata_valor_monetario(produto["preco"])
 
         UI.exibe_mensagem("[#{numero}] #{nome}: #{preco}"            )
     end
@@ -92,8 +97,12 @@ def insere_quantidade
 end 
 
 def exibe_produto_escolhido(produto, quantidade)
+    nome = produto["nome"]
+    preco = Utils.formata_valor_monetario(produto["preco"])
+
     UI.clear
-    UI.exibe_mensagem("Produto: #{produto["nome"]} - R$#{produto["preco"]}0")
+    UI.exibe_mensagem("Produto: #{nome}")
+    UI.exibe_mensagem("Preço unitário: #{preco}")
     UI.exibe_mensagem("Quantidade: #{quantidade}")
 end
 
@@ -108,7 +117,7 @@ while opcao_menu != Menu::SAIR
         sub_total += calcula_sub_total(produtos, produto_escolhido, quantidade)
         
         UI.linha_vazia
-        UI.exibe_mensagem("Sub-total: R$#{sub_total}0")
+        UI.exibe_mensagem("Sub-total: #{Utils.formata_valor_monetario(sub_total)}")
 
         UI.linha_vazia
         UI.exibe_mensagem("Digite #{Menu::VOLTAR} para voltar ao menu inicial: ", false)
