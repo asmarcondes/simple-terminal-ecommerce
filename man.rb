@@ -1,6 +1,25 @@
 module UI
-    def UI.clear
-        puts "\e[H\e[2J"
+    def UI.clear        
+        print "\e[H"    # tells the terminal to move the cursor to the top left corner, false
+        print "\e[2J"   # clear the screen, false
+        print "\e[3J"   # clear the scrollback buffer, false
+    end
+
+    def UI.exibe_mensagem(mensagem, quebra_linha=true)
+        if quebra_linha
+            puts mensagem
+        else
+            print mensagem
+        end
+    end
+
+    def UI.solicita_input(converte_inteiro=true)
+        input = gets.chomp
+        converte_inteiro ? input.to_i : input
+    end
+
+    def UI.linha_vazia
+        puts ""
     end
 end
 
@@ -20,25 +39,18 @@ produtos = [
     }    
 ]
 
-# Variáveis de controle do e-commerce
-sub_total = 0.0
-opcao_menu = 0
-
-def solicita_input_usuario(converte_inteiro=true)
-   input = gets.chomp
-   converte_inteiro ? input.to_i : input
-end
-
 def exibe_menu_principal
     UI.clear
+    UI.exibe_mensagem("* MENU PRINCIPAL *")
+    UI.exibe_mensagem("Selecione a opção desejada:")     
+    UI.linha_vazia
 
-    puts "Selecione a opção desejada:\n"
-    puts "[1] Comprar"
-    puts "[2] Sair"
+    UI.exibe_mensagem("[1] Comprar")
+    UI.exibe_mensagem("[2] Sair")
+    UI.linha_vazia
 
-    print "> "
-
-    solicita_input_usuario  
+    UI.exibe_mensagem("> ", false)
+    UI.solicita_input  
 end
 
 def calcula_sub_total(produtos, opcao, quantidade)
@@ -50,35 +62,36 @@ end
 
 def selecao_produto(produtos)
     UI.clear
-
-    puts "Selecione o Produto Desejado"
+    UI.exibe_mensagem("Selecione o produto desejado:")
+    UI.linha_vazia   
 
     produtos.each_with_index do |produto, i|
         numero = i + 1
         nome = produto["nome"]
         preco = produto["preco"].to_s + "0"
 
-        puts "[#{numero}] #{nome}: #{preco}"            
+        UI.exibe_mensagem("[#{numero}] #{nome}: #{preco}"            )
     end
 
-    solicita_input_usuario 
+    UI.linha_vazia
+    UI.exibe_mensagem("> ", false)
+
+    UI.solicita_input 
 end
 
 def insere_quantidade
     UI.clear
-
-    print "Digite a quantidade desejada: "
-
-    solicita_input_usuario         
+    UI.exibe_mensagem("Digite a quantidade desejada: ", false)
+    UI.solicita_input         
 end 
 
 def exibe_produto_escolhido(produto, quantidade)
     UI.clear
-
-    puts "Produto: #{produto["nome"]} - R$#{produto["preco"]}0"
-    puts "Quantidade: #{quantidade}"     
+    UI.exibe_mensagem("Produto: #{produto["nome"]} - R$#{produto["preco"]}0")
+    UI.exibe_mensagem("Quantidade: #{quantidade}")
 end
 
+sub_total = 0.0
 opcao_menu = exibe_menu_principal
  
 while opcao_menu != 2    
@@ -88,13 +101,17 @@ while opcao_menu != 2
         exibe_produto_escolhido(produtos[produto_escolhido-1] ,quantidade)
         sub_total += calcula_sub_total(produtos, produto_escolhido, quantidade)
         
-        puts "Sub-total: R$#{sub_total}0"
-        print "Digite 0 para voltar ao menu inicial: "
+        UI.linha_vazia
+        UI.exibe_mensagem("Sub-total: R$#{sub_total}0")
 
-        opcao_checkout =  solicita_input_usuario   
+        UI.linha_vazia
+        UI.exibe_mensagem("Digite 0 para voltar ao menu inicial: ", false)
+
+        opcao_checkout =  UI.solicita_input
         opcao_menu = exibe_menu_principal if opcao_checkout == 0
     end   
 end
 
 UI.clear
-puts "Ate Breve!!!!\n"
+UI.exibe_mensagem("Até breve!!!")
+UI.linha_vazia
