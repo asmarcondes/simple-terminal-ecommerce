@@ -74,9 +74,8 @@ module Program
     UI.solicita_input
   end
 
-  def self.calcula_sub_total(opcao, quantidade)
-    indice_produto = opcao - 1
-    preco_produto = DB.produtos[indice_produto]['preco']
+  def self.calcula_sub_total(produto, quantidade)
+    preco_produto = produto['preco']
 
     @@sub_total += preco_produto * quantidade
 
@@ -138,9 +137,10 @@ module Program
       Menu::COMPRAR => lambda {
         produto_escolhido = selecao_produto
         quantidade = insere_quantidade
+        produto = DB.produtos[produto_escolhido - 1]
 
-        exibe_produto_escolhido(DB.produtos[produto_escolhido - 1], quantidade)
-        calcula_sub_total(produto_escolhido, quantidade)
+        exibe_produto_escolhido(produto, quantidade)
+        calcula_sub_total(produto, quantidade)
 
         opcao_escolhida = exibe_retorno_menu
       },
