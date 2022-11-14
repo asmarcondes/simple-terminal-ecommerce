@@ -3,6 +3,7 @@ module Utils
         "R$#{numero}0"
     end
 end
+
 module UI
     def UI.clear        
         print "\e[H"    # tells the terminal to move the cursor to the top left corner, false
@@ -35,7 +36,7 @@ module Menu
 end
 
 # Lista de produtos disponíveis para adicionar ao carrinho
-produtos = [
+$produtos = [
     {
         "nome" => "Produto A",
         "preco" => 50.0        
@@ -49,6 +50,8 @@ produtos = [
         "preco" => 100.0        
     }    
 ]
+
+$sub_total = 0.0
 
 def exibe_menu_principal
     UI.clear
@@ -64,19 +67,22 @@ def exibe_menu_principal
     UI.solicita_input  
 end
 
-def calcula_sub_total(produtos, opcao, quantidade)
+def calcula_sub_total(opcao, quantidade)
     indice_produto = opcao - 1
-    preco_produto = produtos[indice_produto]["preco"]
+    preco_produto = $produtos[indice_produto]["preco"]
 
-    preco_produto * quantidade     
+    $sub_total += preco_produto * quantidade     
+
+    UI.linha_vazia
+    UI.exibe_mensagem("Sub-total: #{Utils.formata_valor_monetario($sub_total)}")
 end
 
-def selecao_produto(produtos)
+def selecao_produto
     UI.clear
     UI.exibe_mensagem("Selecione o produto desejado:")
     UI.linha_vazia   
 
-    produtos.each_with_index do |produto, i|
+    $produtos.each_with_index do |produto, i|
         numero = i + 1
         nome = produto["nome"]
         preco = Utils.formata_valor_monetario(produto["preco"])
@@ -106,23 +112,23 @@ def exibe_produto_escolhido(produto, quantidade)
     UI.exibe_mensagem("Quantidade: #{quantidade}")
 end
 
-sub_total = 0.0
+def exibe_retorno_menu
+    UI.linha_vazia
+    UI.exibe_mensagem("Digite #{Menu::VOLTAR} para voltar ao menu inicial: ", false)
+    UI.solicita_input       
+end
+
 opcao_menu = exibe_menu_principal
  
 while opcao_menu != Menu::SAIR    
     if opcao_menu == Menu::COMPRAR       
-        produto_escolhido = selecao_produto(produtos)
-        quantidade = insere_quantidade        
-        exibe_produto_escolhido(produtos[produto_escolhido-1] ,quantidade)
-        sub_total += calcula_sub_total(produtos, produto_escolhido, quantidade)
-        
-        UI.linha_vazia
-        UI.exibe_mensagem("Sub-total: #{Utils.formata_valor_monetario(sub_total)}")
-
-        UI.linha_vazia
-        UI.exibe_mensagem("Digite #{Menu::VOLTAR} para voltar ao menu inicial: ", false)
-        
-        opcao_menu =  UI.solicita_input        
+        produto_escolhido = selecao_produto
+        quantidade = insere_quantidade  
+              
+        exibe_produto_escolhido($produtos[produto_escolhido-1], quantidade)
+        calcula_sub_total(produto_escolhido, quantidade)
+       
+        opcao_menu = exibe_retorno_menu
     elsif opcao_menu == Menu::VOLTAR
         opcao_menu = exibe_menu_principal
     end   
