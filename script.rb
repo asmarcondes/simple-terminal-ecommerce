@@ -35,21 +35,27 @@ module Menu
   VOLTAR = 0
 end
 
-# Lista de produtos disponíveis para adicionar ao carrinho
-$produtos = [
-  {
-    'nome' => 'Produto A',
-    'preco' => 50.0
-  },
-  {
-    'nome' => 'Produto B',
-    'preco' => 200.0
-  },
-  {
-    'nome' => 'Produto C',
-    'preco' => 100.0
-  }
-]
+module DB
+  # Lista de produtos disponíveis para adicionar ao carrinho
+  def produtos
+    Array.new(
+      [
+        {
+          'nome' => 'Produto A',
+          'preco' => 50.0
+        },
+        {
+          'nome' => 'Produto B',
+          'preco' => 200.0
+        },
+        {
+          'nome' => 'Produto C',
+          'preco' => 100.0
+        }
+      ]
+    )
+  end
+end
 
 $sub_total = 0.0
 
@@ -69,7 +75,7 @@ end
 
 def calcula_sub_total(opcao, quantidade)
   indice_produto = opcao - 1
-  preco_produto = $produtos[indice_produto]['preco']
+  preco_produto = DB.produtos[indice_produto]['preco']
 
   $sub_total += preco_produto * quantidade
 
@@ -82,7 +88,7 @@ def selecao_produto
   UI.exibe_mensagem('Selecione o produto desejado:')
   UI.linha_vazia
 
-  $produtos.each_with_index do |produto, i|
+  DB.produtos.each_with_index do |produto, i|
     numero = i + 1
     nome = produto['nome']
     preco = Utils.formata_valor_monetario(produto['preco'])
@@ -126,7 +132,7 @@ while opcao_menu != Menu::SAIR
     produto_escolhido = selecao_produto
     quantidade = insere_quantidade
 
-    exibe_produto_escolhido($produtos[produto_escolhido - 1], quantidade)
+    exibe_produto_escolhido(DB.produtos[produto_escolhido - 1], quantidade)
     calcula_sub_total(produto_escolhido, quantidade)
 
     opcao_menu = exibe_retorno_menu
