@@ -125,31 +125,35 @@ module Program
     UI.solicita_input
   end
 
-  def self.inicio
-    opcao_menu = exibe_menu_principal
+  def self.saida
+    UI.clear
+    UI.exibe_mensagem('Até breve!!!')
+    UI.linha_vazia
+  end
 
-    while opcao_menu != Menu::SAIR
-      case opcao_menu
-      when Menu::COMPRAR
+  def self.inicio
+    opcao_escolhida = exibe_menu_principal
+
+    acoes = {
+      Menu::COMPRAR => lambda {
         produto_escolhido = selecao_produto
         quantidade = insere_quantidade
 
         exibe_produto_escolhido(DB.produtos[produto_escolhido - 1], quantidade)
         calcula_sub_total(produto_escolhido, quantidade)
 
-        opcao_menu = exibe_retorno_menu
-      when Menu::VOLTAR
-        opcao_menu = exibe_menu_principal
-      end
-    end
+        opcao_escolhida = exibe_retorno_menu
+      },
+      Menu::VOLTAR => lambda {
+        opcao_escolhida = exibe_menu_principal
+      },
+      Menu::SAIR => lambda {
+        saida
+        opcao_escolhida = -1
+      }
+    }
 
-    saida
-  end
-
-  def self.saida
-    UI.clear
-    UI.exibe_mensagem('Até breve!!!')
-    UI.linha_vazia
+    acoes[opcao_escolhida].call while acoes.key?(opcao_escolhida)
   end
 end
 
